@@ -43,7 +43,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--script-->
 </head>
 <body>
-	
+	<?php include 'header.php'; ?>
 	<!---banner--->
 		<div class="banner">
 			<div class="container">
