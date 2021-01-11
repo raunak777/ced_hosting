@@ -59,6 +59,7 @@
 								<li><a href=""><i class="fa fa-shopping-cart"></i></b></a></li>
 								<!-- <li><a href="codes.php">Codes</a></li> -->
 								<li><a href="login.php">Login</a></li>
+								<li><a href="#">Logout</a></li>
 							</ul>
 									  
 						</div><!-- /.navbar-collapse -->
