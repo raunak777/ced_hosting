@@ -27,12 +27,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="js/jquery.chocolat.js"></script>
 <link rel="stylesheet" href="css/chocolat.css" type="text/css" media="screen">
 <!--lightboxfiles-->
-<script type="text/javascript">
-	$(function() {
+<!-- <script type="text/javascript">
+	jQuery(function() {
 	$('.team a').Chocolat();
 	});
 </script>	
-<script type="text/javascript" src="js/jquery.hoverdir.js"></script>	
+ --><script type="text/javascript" src="js/jquery.hoverdir.js"></script>	
 						<script type="text/javascript">
 							$(function() {
 							

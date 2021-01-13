@@ -12,6 +12,42 @@ body a{
 	-o-transition:0.5s all;
 	-ms-transition:0.5s all;
 }
+/*my custome css*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+select{
+  appearance:none;
+}
+
+#error_msg{
+        background: #DEF1D8;
+        color: red;
+        padding: 1%;
+        width: 15%;
+        display: none;
+        position: absolute;
+        right: 2%;
+        top: 20%;
+        border-radius: 5px;
+    }
+
+    #success_msg{
+        background: #DEF1D8;
+        color: green;
+        padding: 1%;
+        width: 15%;
+        display: none;
+        border-radius: 5px;
+        position: absolute;
+        right: 2%;
+        top: 20%;
+    }
+/*end my css*/
+
+
 input[type="button"]{
 	transition:0.5s all;
 	-webkit-transition:0.5s all;
@@ -1542,6 +1578,7 @@ a.button4:hover {
 /*--register--*/
 .register{
 	padding:5em 0;
+  margin-left: 30%;
 }
 .register-top-grid h3, .register-bottom-grid h3 {
 	 color: #7277d5;
@@ -1552,8 +1589,8 @@ a.button4:hover {
     font-family: 'Voltaire', sans-serif;
 }
 .register-top-grid div, .register-bottom-grid div {
-	width: 48%;
-	float: left;
+	width: 70%;
+	
 	margin: 10px 0;
 }
 .register-top-grid span, .register-bottom-grid span {
@@ -1563,13 +1600,15 @@ a.button4:hover {
 	display: block;
 	text-transform: uppercase;
 }
-.register-top-grid input[type="text"], .register-bottom-grid input[type="password"] {
+.register-top-grid input[type="text"],.register-top-grid input[type="email"],.register-top-grid input[type="number"],.register-top-grid select, .register-bottom-grid input[type="password"]{
 	border: 1px solid #555;
 	outline-color:#FD9F3E;
 	width: 96%;
 	font-size: 1em;
 	padding: 0.5em;
 }
+
+
 .checkbox {
 	margin-bottom: 4px;
 	padding-left: 27px;
@@ -1641,7 +1680,7 @@ a.button4:hover {
 .register-but{
 	margin-top:1em;
 }
-.register-but form input[type="submit"] {
+ input[type="submit"] {
 	background: #e7663f;
 	color: #FFF;
 	font-size: 1.2em;
