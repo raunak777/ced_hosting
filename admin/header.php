@@ -1,4 +1,9 @@
-
+<?php 
+session_start();
+if (isset($_SESSION['username'])) {
+  header("Location: ../web/index.php");
+}
+ ?>
 <!DOCTYPE html>
 <html>
 
@@ -9,8 +14,9 @@
   <meta name="author" content="Creative Tim">
   <!-- text editor -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://cdn.tiny.cloud/1/u6d5o7rruhkaxjxww0o6wuw5mrey0bszj45q3d6t66n2nvzw/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  
   <script>
   tinymce.init({
       selector: 'textarea.editor',
@@ -53,7 +59,7 @@
   <!-- datatable cdn -->
   <!-- datatable css -->
   <link rel="stylesheet" 
-  href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+  href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"><script src="https://cdn.tiny.cloud/1/u6d5o7rruhkaxjxww0o6wuw5mrey0bszj45q3d6t66n2nvzw/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <!-- datatable css-->
   
   <!-- text area -->
@@ -96,13 +102,13 @@
           </li>
           <ul class="navbar-nav sub-menu collapse" id="products">
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="createcatagory.php">
                 <i class="ni ni-planet text-orange"></i>
                 <span class="nav-link-text">Create Category</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="addproduct.php">
                 <i class="ni ni-pin-3 text-primary"></i>
                 <span class="nav-link-text">Add Product</span>
               </a>

@@ -19,7 +19,12 @@
   <!-- Argon CSS -->
   <link rel="stylesheet" href="assets/css/argon.css?v=1.2.0" type="text/css">
 </head>
-
+<style type="text/css">
+  .brdbtm{
+    margin: 30px 0 40px 0;
+    border-bottom: 3px solid #E8E8E8;
+  }
+</style>
 <body>
   <!-- Sidenav -->
   <?php include 'header.php'; ?>
@@ -291,34 +296,31 @@
 
                   <div class="card-body px-lg-5 py-lg-5">
                     <div class="text-center text-muted mb-4">
-                      <large>Create Catagory</large>
+                      <large><h1>Create New Product</h1></large>
+                      <hr>
                     </div>
                     <form role="form">
+                      <div class="form-group">
+                        <select class="form-control" id="selectid">
+                          <?php
+                          include 'productclass.php';
+                          $prod= new product();
+                          $data= $prod->get_product();
+                          $length= $data->num_rows;
+                          for ($i=0; $i <$length ; $i++) { 
+                            $row=$data->fetch_assoc();
+                            ?>
+                            <option value="<?php echo $row['id']; ?>"><?php echo $row['prod_name']; ?></option>
+                          <?php } ?>
+                          
+                        </select>
+                      </div>
                       <div class="form-group">
                         <div class="input-group input-group-merge input-group-alternative mb-3">
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                           </div>
-                          <?php  
-                          include 'productclass.php';
-                          $prod= new product();
-                          $data = $prod->getMainProduct();
-                          if (!$data== false) {
-                            echo '<input class="form-control" value="'.$data['prod_name'] .'" type="text" id="mainprod" data-pid="'. $data['id'] .'"  disabled>';
-                          }
-                          else{
-                            echo '<input class="form-control" placeholder="hosting name" type="text">';
-                          }
-                          ?>
-
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="input-group input-group-merge input-group-alternative mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="ni ni-email-83"></i></span>
-                          </div>
-                          <input class="form-control" id="prodname" name="prodname" placeholder="Product Name" type="text">
+                          <input class="form-control" placeholder="Enter product name" type="text" id="productname" name="prodname">
                         </div>
                       </div>
                       <div class="form-group">
@@ -326,11 +328,85 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-link"></i></span>
                           </div>
-                          <input class="form-control" id="link" name="link" placeholder="Enter link(optional)" type="text">
+                          <input class="form-control" placeholder="Page URL" type="text" id="pageurl" name="pageurl">
+                        </div>
+                      </div>
+                      <div class="brdbtm"></div>
+                      <div class="text-center text-muted mb-4">
+                        <large><h1>Product Description</h1></large>
+                        <hr>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-inr"></i></span>
+                          </div>
+                          <input class="form-control" id="monthly" name="monthly" placeholder="Monthly Price" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-inr"></i></span>
+                          </div>
+                          <input class="form-control" id="anual" name="anual" placeholder="Anual Price" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-code-fork"></i></span>
+                          </div>
+                          <input class="form-control" id="sku" name="sku" placeholder="SKU" type="text">
+                        </div>
+                      </div>
+                      <div class="brdbtm"></div>
+                      <div class="text-center text-muted mb-4">
+                        <large><h1>Features</h1></large>
+                        <hr>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-space-shuttle"></i></span>
+                          </div>
+                          <input class="form-control" id="webspace" name="webspace" placeholder="Web Space (in GB)" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-space-shuttle"></i></span>
+                          </div>
+                          <input class="form-control" id="bandwidth" name="bandwidth" placeholder="Bandwidth (in GB)" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-globe"></i></span>
+                          </div>
+                          <input class="form-control" id="freedomain" name="freedomain" placeholder="Free Domain(Enter 0 if not provide)" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-language"></i></span>
+                          </div>
+                          <input class="form-control" id="technology" name="technology" placeholder="Technology Support(ex. PHP, Mysql etc)" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                          </div>
+                          <input class="form-control" id="mailbox" name="mailbox" placeholder="MailBox(Enter 0 if not provide)" type="number">
                         </div>
                       </div>
                       <div class="text-center">
-                        <button type="button" id="addprod" class="btn btn-primary mt-4">Add Catagory</button>
+                        <button type="button" id="createcategory" class="btn btn-primary mt-4">Add Product</button>
                       </div>
                     </form>
                   </div>
@@ -339,73 +415,37 @@
             </div>
           </div>
         </div>
-      </div>
-     <!-- table display -->
-      <div class="row">
-        <div class="col-xl-12">
-          <div class="card">
-            <div class="table-responsive">
-              <!-- Projects table -->
-              <table class="table align-items-center table-flush" id="displayProduct">
-                <thead class="thead-light">
-                    <tr>
-                       <!--  <th>Category Parent Name</th> -->
-                        <th>Category Name</th>
-                        <th>Link</th>
-                        <th>Category Availability</th>
-                        <th>Category Launch Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-<!-- table display -->
-    </div>
-
-  </div>
-
+      </div></div></div>
     </body>
+    <script src="productvalidation.js"></script>
     <script type="text/javascript">
       $(function(){
-        $("#addprod").on("click",function(){
-          var mainprodid= $("#mainprod").data('pid');
-          var newprod= $("#prodname").val();
-          var link= $("#link").val();
-          if (link=='') {
-            link='#';
+        $("#createcategory").on("click",function() {
+          var productid=$("#selectid option:selected").val().trim();
+          var productname=$("#productname").val().trim();
+          var pageurl=$("#pageurl").val().trim();
+          var monthly=$("#monthly").val().trim();
+          var anual=$("#anual").val().trim();
+          var sku=$("#sku").val().trim();
+          var webspace=$("#webspace").val().trim();
+          var bandwidth=$("#bandwidth").val().trim();
+          var freedomain=$("#freedomain").val().trim();
+          var technology=$("#technology").val().trim();
+          var mailbox=$("#mailbox").val().trim();
+          $.ajax({
+            type: "POST",
+            url: "productmediater.php",
+            data:{action: 'prod_insert',productid,productname,pageurl,monthly,anual,sku,webspace,bandwidth,freedomain,technology,mailbox },
+            success: function(data)
+            {
+              if (data!=false) {
+                alert('Product added successfully');
+              } else {
+              alert('Product Addition Failed');
+            }
           }
-          var regprod=/^(?![0-9]*$)([a-zA-Z]+\s?)*([0-9]+\.?)*$/;
-          if (newprod=="" || !(newprod.match(regprod))) {
-            alert("Please enter valid Catagory name");
-          }
-          else{
-            $.ajax({
-              type:"POST",
-              url:"productmediater.php",
-              data:{action: 'ins_cat', mainprodid,newprod,link},
-              success: function(data)
-              {
-                console.log(data);
-              }
-            });
-          }
-        });
-        //show product
-        $('#displayProduct').DataTable( {
-              "ajax": {
-                url : "productmediater.php?action=get",
-                dataSrc : 'data'
-              }
-          });
-
-        $("#displayProduct").on("click","#editproduct",function(){
-          var currentId= $(this).data("eid");
-          alert(currentId);
-          location.replace("editproduct.php?id="+currentid);
         });
       });
-    </script>
-    </html>
+    });
+  </script>
+  </html>

@@ -1,5 +1,9 @@
 <?php
+session_start();
 $actual_link = $_SERVER["PHP_SELF"];
+if (isset($_SESSION['admin'])) {
+	header('Location : ../admin');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,14 +47,14 @@ $actual_link = $_SERVER["PHP_SELF"];
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hosting<i class="caret"></i></a>
 								<ul class="dropdown-menu">
 									<?php
-									include 'productclass.php';
+									include '../admin/productclass.php';
 									$prod= new product();
 									$data= $prod->get_product();
 									$length= $data->num_rows;
 									for ($i=0; $i <$length ; $i++) { 
 										$row=$data->fetch_assoc();
 										?>
-										<li><a href="#"><?php echo $row['prod_name']; ?></a></li>
+										<li><a href="<?php echo $row['link'] ?>"><?php echo $row['prod_name']; ?></a></li>
 									<?php } ?>
 										<!-- <li><a href="wordpresshosting.php">WordPress Hosting</a></li>
 										<li><a href="windowshosting.php">Windows Hosting</a></li>
@@ -65,6 +69,7 @@ $actual_link = $_SERVER["PHP_SELF"];
 								<?php
 								if (isset($_SESSION['username'])) {
 									echo '<li><a href="logout.php">Logout</a></li>';
+									echo '<li><a href="#">Hello! '.$_SESSION["username"].'</a></li>';
 								}
 								else {
 									$active_link=($actual_link=="/cedhosting/login.php" ? "active" : "");
