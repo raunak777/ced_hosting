@@ -3,9 +3,6 @@ include 'productclass.php';
 $prod= new product();
 extract($_POST);
 
-$action =$_GET['action'];
-
-
 switch ($action) {
 	case 'ins_cat':
 		$data= $prod->insertCategory($mainprodid, $newprod, $link);
@@ -15,19 +12,23 @@ switch ($action) {
 		$data= $prod->insertProduct($productid,$productname,$pageurl,$monthly,$anual,$sku,$webspace,$bandwidth,$freedomain,$technology,$mailbox);
 		print_r($data);
 		break;
-
-	case 'get':
-	$data = $prod->show_product_category();
-	while ($row=$data->fetch_assoc()) {
-			if ($row['prod_available']=='1') {
-				$available="available";
-			} else {
-				$available="unavailable";
-			}
-			$arr['data'][]=array($row['prod_name'],$row['link'],$available,$row['prod_launch_date'],"<a href='javascript:void(0)' class='btn btn-info' data-eid='".$row['id']."' id='editproduct' data-toggle='modal' data-target='#exampleModalSignUp'>Edit</a> <a href='javascript:void(0)' class='btn btn-danger' data-did='".$row['id']."' id='deleteproduct'>Delete</a>");
-		}
-	print_r(json_encode($arr));
+	case 'update':
+	$data=$prod->update_product_category($cat, $link, $avail, $id);
+	print_r($data);
 	break;
+
+	case 'delete':
+		$data = $prod->delete_product_category($currentId);
+		print_r($data);
+		break;
+	case 'show':
+			$data = $prod->show_product_subproduct();
+			print_r(json_encode($data));
+			break;
+	case 'productdel':
+			$data = $prod->delete_product_of_category($id);
+			print_r($data);
+			break;	
 
 	default:
 		break;

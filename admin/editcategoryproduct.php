@@ -18,7 +18,12 @@
   <!-- Argon CSS -->
   <link rel="stylesheet" href="assets/css/argon.css?v=1.2.0" type="text/css">
 </head>
-
+<style type="text/css">
+  .brdbtm{
+    margin: 30px 0 40px 0;
+    border-bottom: 3px solid #E8E8E8;
+  }
+</style>
 <body>
   <!-- Sidenav -->
   <?php include 'header.php'; ?>
@@ -290,38 +295,31 @@
 
                   <div class="card-body px-lg-5 py-lg-5">
                     <div class="text-center text-muted mb-4">
-                      <large>Create Catagory</large>
+                      <large><h1>Create New Product</h1></large>
+                      <hr>
                     </div>
                     <form role="form">
+                      <div class="form-group">
+                        <select class="form-control" id="selectid">
+                          <?php
+                          include 'productclass.php';
+                          $prod= new product();
+                          $data= $prod->get_product();
+                          $length= $data->num_rows;
+                          for ($i=0; $i <$length ; $i++) { 
+                            $row=$data->fetch_assoc();
+                            ?>
+                            <option value="<?php echo $row['id']; ?>"><?php echo $row['prod_name']; ?></option>
+                          <?php } ?>
+                          
+                        </select>
+                      </div>
                       <div class="form-group">
                         <div class="input-group input-group-merge input-group-alternative mb-3">
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                           </div>
-                          <?php  
-                          include 'productclass.php';
-                          $prod= new product();
-                          $data = $prod->getMainProduct();
-                          if (!$data== false) {
-                            echo '<input class="form-control" value="'.$data['prod_name'] .'" type="text" id="mainprod" data-pid="'. $data['id'] .'"  disabled>';
-                          }
-                          else{
-                            echo '<input class="form-control" placeholder="hosting name" type="text">';
-                          }
-                          
-                          $rows= $prod->edit_product_category($_GET['id']);
-
-                          ?>
-
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <input type="text" style="display: none" name="id" id="currentid" value="<?php echo $rows['id'] ?>">
-                        <div class="input-group input-group-merge input-group-alternative mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="ni ni-email-83"></i></span>
-                          </div>
-                          <input class="form-control" value="<?php echo $rows['prod_name'];  ?>" id="subcat" name="subcat" placeholder="Sub Catagory" type="text">
+                          <input class="form-control" placeholder="Enter product name" type="text" id="productname" name="prodname">
                         </div>
                       </div>
                       <div class="form-group">
@@ -329,19 +327,85 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-link"></i></span>
                           </div>
-                          <input class="form-control" id="availibilty" name="availibilty" placeholder="Availibilty" value="<?php echo $rows['prod_available'];  ?>" type="text">
+                          <input class="form-control" placeholder="Page URL" type="text" id="pageurl" name="pageurl">
                         </div>
                       </div>
-                       <div class="form-group">
+                      <div class="brdbtm"></div>
+                      <div class="text-center text-muted mb-4">
+                        <large><h1>Product Description</h1></large>
+                        <hr>
+                      </div>
+                      <div class="form-group">
                         <div class="input-group input-group-merge input-group-alternative mb-3">
                           <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-link"></i></span>
+                            <span class="input-group-text"><i class="fa fa-inr"></i></span>
                           </div>
-                          <input class="form-control" id="link" name="link" placeholder="Link" value="<?php echo $rows['link'];  ?>" type="text">
+                          <input class="form-control" id="monthly" name="monthly" placeholder="Monthly Price" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-inr"></i></span>
+                          </div>
+                          <input class="form-control" id="anual" name="anual" placeholder="Anual Price" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-code-fork"></i></span>
+                          </div>
+                          <input class="form-control" id="sku" name="sku" placeholder="SKU" type="text">
+                        </div>
+                      </div>
+                      <div class="brdbtm"></div>
+                      <div class="text-center text-muted mb-4">
+                        <large><h1>Features</h1></large>
+                        <hr>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-space-shuttle"></i></span>
+                          </div>
+                          <input class="form-control" id="webspace" name="webspace" placeholder="Web Space (in GB)" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-space-shuttle"></i></span>
+                          </div>
+                          <input class="form-control" id="bandwidth" name="bandwidth" placeholder="Bandwidth (in GB)" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-globe"></i></span>
+                          </div>
+                          <input class="form-control" id="freedomain" name="freedomain" placeholder="Free Domain(Enter 0 if not provide)" type="number">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-language"></i></span>
+                          </div>
+                          <input class="form-control" id="technology" name="technology" placeholder="Technology Support(ex. PHP, Mysql etc)" type="text">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="input-group input-group-merge input-group-alternative mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                          </div>
+                          <input class="form-control" id="mailbox" name="mailbox" placeholder="MailBox(Enter 0 if not provide)" type="number">
                         </div>
                       </div>
                       <div class="text-center">
-                        <button type="button" id="updateprod" class="btn btn-primary mt-4">Update</button>
+                        <button type="button" id="createcategory" class="btn btn-primary mt-4">Update Product</button>
                       </div>
                     </form>
                   </div>
@@ -350,33 +414,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript">
-    $(function(){
-      $("#updateprod").on("click",function(){
-        var id= $("#currentid").val();
-        var cat= $("#subcat").val();
-        var avail= $("#availibilty").val();
-        var link= $("#link").val();
-
-        $.ajax({
-          type: "POST",
-          url: "productmediater.php",
-          data: {action: "update", id,cat,avail, link},
-          success: function(data)
-          {
-            if (data==true) {
-              alert("Data Update Successfull");
-            }
-            else{
-              alert("Data not Updated");
-            }
-          }
-        });
-      });
-    });
-  </script>
-</body>
-</html>
+      </div></div></div>
+    </body>
+    </html>

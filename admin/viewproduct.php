@@ -18,7 +18,12 @@
   <!-- Argon CSS -->
   <link rel="stylesheet" href="assets/css/argon.css?v=1.2.0" type="text/css">
 </head>
-
+<style type="text/css">
+  .brdbtm{
+    margin: 30px 0 40px 0;
+    border-bottom: 3px solid #E8E8E8;
+  }
+</style>
 <body>
   <!-- Sidenav -->
   <?php include 'header.php'; ?>
@@ -280,103 +285,97 @@
               <a href="#" class="btn btn-sm btn-neutral">Filters</a>
             </div>
           </div>
-          <!-- Page content -->
 
-          <div class="container pb-5" >
-            <!-- Table -->
-            <div class="row justify-content-center">
-              <div class="col-lg-6 col-md-8">
-                <div class="card bg-secondary border-0">
-
-                  <div class="card-body px-lg-5 py-lg-5">
-                    <div class="text-center text-muted mb-4">
-                      <large>Create Catagory</large>
-                    </div>
-                    <form role="form">
-                      <div class="form-group">
-                        <div class="input-group input-group-merge input-group-alternative mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
-                          </div>
-                          <?php  
-                          include 'productclass.php';
-                          $prod= new product();
-                          $data = $prod->getMainProduct();
-                          if (!$data== false) {
-                            echo '<input class="form-control" value="'.$data['prod_name'] .'" type="text" id="mainprod" data-pid="'. $data['id'] .'"  disabled>';
-                          }
-                          else{
-                            echo '<input class="form-control" placeholder="hosting name" type="text">';
-                          }
-                          
-                          $rows= $prod->edit_product_category($_GET['id']);
-
-                          ?>
-
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <input type="text" style="display: none" name="id" id="currentid" value="<?php echo $rows['id'] ?>">
-                        <div class="input-group input-group-merge input-group-alternative mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="ni ni-email-83"></i></span>
-                          </div>
-                          <input class="form-control" value="<?php echo $rows['prod_name'];  ?>" id="subcat" name="subcat" placeholder="Sub Catagory" type="text">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="input-group input-group-merge input-group-alternative mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-link"></i></span>
-                          </div>
-                          <input class="form-control" id="availibilty" name="availibilty" placeholder="Availibilty" value="<?php echo $rows['prod_available'];  ?>" type="text">
-                        </div>
-                      </div>
-                       <div class="form-group">
-                        <div class="input-group input-group-merge input-group-alternative mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-link"></i></span>
-                          </div>
-                          <input class="form-control" id="link" name="link" placeholder="Link" value="<?php echo $rows['link'];  ?>" type="text">
-                        </div>
-                      </div>
-                      <div class="text-center">
-                        <button type="button" id="updateprod" class="btn btn-primary mt-4">Update</button>
-                      </div>
-                    </form>
-                  </div>
+        </div>
+        <!-- Page content -->
+        <div class="container mt--18 pb-5">
+          <!-- table display -->
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="card">
+                <div class="table-responsive">
+                  <!-- Projects table -->
+                  <table class="table align-items-center table-flush" id="showproduct">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Product Parent Name</th>
+                        <th>Product Name</th>
+                        <th>Link</th>
+                        <th>Product Availability</th>
+                        <th>Product Launch Date</th>
+                        <th>Monthly Price</th>
+                        <th>Annual price</th>
+                        <th>SKU</th>
+                        <th>Webspace(in GB)</th>
+                        <th>Bandwidth(in GB)</th>
+                        <th>Free Domain</th>
+                        <th>Language Technology</th>
+                        <th>MailBox</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
+          <!-- table display -->
         </div>
       </div>
     </div>
   </div>
-  <script type="text/javascript">
-    $(function(){
-      $("#updateprod").on("click",function(){
-        var id= $("#currentid").val();
-        var cat= $("#subcat").val();
-        var avail= $("#availibilty").val();
-        var link= $("#link").val();
+</body>
+<script type="text/javascript">
+  $(function()
+  {
+        // $.ajax({
+        //   type:"POST",
+        //   url: "productmediater.php",
+        //   data:{action: "show"},
+        //   success: function(data){
+        //     console.log(data);
+        //   }
+        // });
 
+
+   var table= $('#showproduct').DataTable( {
+        "ajax": {
+          "url":"productmediater.php",
+          "dataSrc" :"",
+           "type": "POST",
+           "data": {"action": 'show'}
+        },
+        "columnDefs": [{
+           "targets": -1,
+            "data": null,
+            "defaultContent": "<button class='btn btn-outline-success' id='editbtn'>Edit</button><button class='btn btn-outline-danger' id='delbtn'>Delete</button>"
+        }]
+
+      });
+   $('#showproduct tbody').on( 'click', '#editbtn', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        alert(data['13']);
+        var id=data['13'];
+        location.replace("editcategoryproduct.php?id="+id);
+
+    });
+
+   $('#showproduct tbody').on( 'click', '#delbtn', function () {
+        if(confirm("Are you sure for delete this data?")){
+        var data = table.row( $(this).parents('tr') ).data();
+        alert(data['13']);
+        var id=data['13'];
         $.ajax({
           type: "POST",
           url: "productmediater.php",
-          data: {action: "update", id,cat,avail, link},
+          data:{action : 'productdel',id},
           success: function(data)
           {
-            if (data==true) {
-              alert("Data Update Successfull");
-            }
-            else{
-              alert("Data not Updated");
-            }
+            alert(data);
           }
         });
-      });
+      }
     });
-  </script>
-</body>
-</html>
+  });
+    </script>
+    </html>

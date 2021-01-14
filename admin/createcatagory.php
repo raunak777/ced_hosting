@@ -389,22 +389,46 @@
               success: function(data)
               {
                 console.log(data);
+                 showProduct();
               }
             });
           }
         });
         //show product
+        function showProduct(){
         $('#displayProduct').DataTable( {
               "ajax": {
-                url : "productmediater.php?action=get",
+                url : "mediater.php?action=get",
                 dataSrc : 'data'
               }
           });
-
+      }
+      showProduct();
         $("#displayProduct").on("click","#editproduct",function(){
           var currentId= $(this).data("eid");
           alert(currentId);
-          location.replace("editproduct.php?id="+currentid);
+          location.replace("editproduct.php?id="+currentId);
+        });
+
+         $("#displayProduct").on("click","#deleteproduct",function(){
+          if(confirm("Are you sure for delete this data?")){
+          var currentId= $(this).data("did");
+          alert(currentId);
+          $.ajax({
+            type:"POST",
+            url: "productmediater.php",
+            data: {action: "delete", currentId},
+            success: function(data){
+              if (data==true) {
+                alert("Data Deleted");
+                 showProduct();
+              }
+              else{
+                alert("Data not Deleted");
+              }
+            }
+          });
+        }
         });
       });
     </script>

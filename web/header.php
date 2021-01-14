@@ -1,9 +1,13 @@
 <?php
+
 session_start();
 $actual_link = $_SERVER["PHP_SELF"];
+
 if (isset($_SESSION['admin'])) {
+	
 	header('Location : ../admin');
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,6 +51,7 @@ if (isset($_SESSION['admin'])) {
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hosting<i class="caret"></i></a>
 								<ul class="dropdown-menu">
 									<?php
+
 									include '../admin/productclass.php';
 									$prod= new product();
 									$data= $prod->get_product();
@@ -54,11 +59,8 @@ if (isset($_SESSION['admin'])) {
 									for ($i=0; $i <$length ; $i++) { 
 										$row=$data->fetch_assoc();
 										?>
-										<li><a href="<?php echo $row['link'] ?>"><?php echo $row['prod_name']; ?></a></li>
+										<li><a href="catpage.php?id=<?php echo $row['id'] ?>"><?php echo $row['prod_name'];  ?></a></li>
 									<?php } ?>
-										<!-- <li><a href="wordpresshosting.php">WordPress Hosting</a></li>
-										<li><a href="windowshosting.php">Windows Hosting</a></li>
-										<li><a href="cmshosting.php">CMS Hosting</a></li> -->
 									</ul>			
 								</li>
 								
