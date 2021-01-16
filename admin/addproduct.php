@@ -440,6 +440,7 @@
             {
               if (data!=false) {
                 alert('Product added successfully');
+                location.reload();
               } else {
               alert('Product Addition Failed');
             }

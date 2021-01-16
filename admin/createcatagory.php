@@ -18,6 +18,8 @@
   <!-- Page plugins -->
   <!-- Argon CSS -->
   <link rel="stylesheet" href="assets/css/argon.css?v=1.2.0" type="text/css">
+
+
 </head>
 
 <body>
@@ -321,114 +323,113 @@
                           <input class="form-control" id="prodname" name="prodname" placeholder="Product Name" type="text">
                         </div>
                       </div>
-                      <div class="form-group">
-                        <div class="input-group input-group-merge input-group-alternative mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-link"></i></span>
-                          </div>
-                          <input class="form-control" id="link" name="link" placeholder="Enter link(optional)" type="text">
-                        </div>
-                      </div>
-                      <div class="text-center">
-                        <button type="button" id="addprod" class="btn btn-primary mt-4">Add Catagory</button>
-                      </div>
-                    </form>
-                  </div>
+                      <div class="container mt-4 mb-4">
+                        <div class="row justify-content-md-center">
+                          <label>HTML</label>
+                          <div class="col-md-12 col-lg-8">
+                            <div class="form-group">
+                             <textarea id="editor" name="editor"></textarea>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     <div class="text-center">
+                      <button type="button" id="addprod" class="btn btn-primary mt-4">Add Catagory</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-     <!-- table display -->
-      <div class="row">
-        <div class="col-xl-12">
-          <div class="card">
-            <div class="table-responsive">
-              <!-- Projects table -->
-              <table class="table align-items-center table-flush" id="displayProduct">
-                <thead class="thead-light">
-                    <tr>
-                       <!--  <th>Category Parent Name</th> -->
-                        <th>Category Name</th>
-                        <th>Link</th>
-                        <th>Category Availability</th>
-                        <th>Category Launch Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-<!-- table display -->
     </div>
+    <!-- table display -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="table-responsive">
+            <!-- Projects table -->
+            <table class="table align-items-center table-flush" id="displayProduct">
+              <thead class="thead-light">
+                <tr>
+                 <!--  <th>Category Parent Name</th> -->
+                 <th>Category Name</th>
+                 <th>Link</th>
+                 <th>Category Availability</th>
+                 <th>Category Launch Date</th>
+                 <th>Action</th>
+               </tr>
+             </thead>
+           </table>
+         </div>
+       </div>
+     </div>
+   </div>
+   <!-- table display -->
+ </div>
 
-  </div>
+</div>
 
-    </body>
-    <script type="text/javascript">
-      $(function(){
-        $("#addprod").on("click",function(){
-          var mainprodid= $("#mainprod").data('pid');
-          var newprod= $("#prodname").val();
-          var link= $("#link").val();
-          if (link=='') {
-            link='#';
-          }
-          var regprod=/^(?![0-9]*$)([a-zA-Z]+\s?)*([0-9]+\.?)*$/;
-          if (newprod=="" || !(newprod.match(regprod))) {
-            alert("Please enter valid Catagory name");
-          }
-          else{
-            $.ajax({
-              type:"POST",
-              url:"productmediater.php",
-              data:{action: 'ins_cat', mainprodid,newprod,link},
-              success: function(data)
-              {
-                console.log(data);
-                 showProduct();
-              }
-            });
+</body>
+<script type="text/javascript">
+  $(function(){
+    $("#addprod").on("click",function(){
+      var mainprodid= $("#mainprod").data('pid');
+      var newprod= $("#prodname").val();
+      var link= tinyMCE.activeEditor.getContent();
+      var regprod=/^(?![0-9]*$)([a-zA-Z]+\s?)*([0-9]+\.?)*$/;
+      if (newprod=="" || !(newprod.match(regprod))) {
+        alert("Please enter valid Catagory name");
+      }
+      else{
+        $.ajax({
+          type:"POST",
+          url:"productmediater.php",
+          data:{action: 'ins_cat', mainprodid,newprod,link},
+          success: function(data)
+          {
+            console.log(data);
+            location.reload();
           }
         });
+      }
+    });
         //show product
         function showProduct(){
-        $('#displayProduct').DataTable( {
-              "ajax": {
-                url : "mediater.php?action=get",
-                dataSrc : 'data'
-              }
+          $('#displayProduct').DataTable( {
+            "ajax": {
+              url : "mediater.php?action=get",
+              dataSrc : 'data'
+            }
           });
-      }
-      showProduct();
+        }
+        showProduct();
         $("#displayProduct").on("click","#editproduct",function(){
           var currentId= $(this).data("eid");
           alert(currentId);
           location.replace("editproduct.php?id="+currentId);
         });
 
-         $("#displayProduct").on("click","#deleteproduct",function(){
+        $("#displayProduct").on("click","#deleteproduct",function(){
           if(confirm("Are you sure for delete this data?")){
-          var currentId= $(this).data("did");
-          alert(currentId);
-          $.ajax({
-            type:"POST",
-            url: "productmediater.php",
-            data: {action: "delete", currentId},
-            success: function(data){
-              if (data==true) {
-                alert("Data Deleted");
-                 showProduct();
+            var currentId= $(this).data("did");
+            alert(currentId);
+            $.ajax({
+              type:"POST",
+              url: "productmediater.php",
+              data: {action: "delete", currentId},
+              success: function(data){
+                if (data==true) {
+                  alert("Data Deleted");
+                  location.reload();
+                }
+                else{
+                  alert("Data not Deleted");
+                }
               }
-              else{
-                alert("Data not Deleted");
-              }
-            }
-          });
-        }
+            });
+          }
         });
       });
     </script>

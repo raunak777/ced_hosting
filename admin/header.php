@@ -1,6 +1,9 @@
 <?php 
 session_start();
-if (isset($_SESSION['username'])) {
+if (!isset($_SESSION['admin'])) {
+  header("Location: ../web/login.php");
+}
+else if (isset($_SESSION['username'])) {
   header("Location: ../web/index.php");
 }
  ?>
@@ -64,6 +67,14 @@ if (isset($_SESSION['username'])) {
   
   <!-- text area -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+  tinymce.init({
+    selector: 'textarea#editor',
+    menubar: false
+  });
+</script>
   
 </head>
 

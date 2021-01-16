@@ -1,9 +1,9 @@
-
 <?php
+
 include_once 'Userclass.php';
 extract($_POST);
-$user = new user();
 
+$user = new user();
 switch ($action) {
 	case 'email_reg':
 	if ($password == $cnfpassword) {
@@ -26,12 +26,62 @@ switch ($action) {
 	break;
 
 	case 'login':
-		$data = $user->userLogin($emailmob, $password);
-		print_r($data);
+	$data = $user->userLogin($emailmob, $password);
+	print_r($data);
+	break;
+
+	case 'cart':
+	$price='';
+	$data = $user->addCart($cartId);
+	// print_r($data);
+	if ($month_annual == $data['data']['mon_price']) {
+		$price= $month_annual. " Monthly Plan";
+	}
+	else if ($month_annual== $data['data']['annual_price']) {
+		$price= $month_annual." Annual Plan";
+	}
+	$_SESSION['cartdata'][]=[$data['data']['prod_id'],$data['data']['prod_p_name'],$data['data']['prod_name'],$price,$data['data']['sku'],'1',$data['data']['prod_id']];
+	print_r($_SESSION);
+	break;
+	case 'cartdata':
+	if (isset($_SESSION['cartdata'])) { 
+		$cartdata=$_SESSION['cartdata'];
+		for ($i=0;$i<count($cartdata);$i++) {
+			$arr['data'][]=$cartdata[$i];
+		}
+	}
+	echo json_encode($arr);
+	break;
+
+	case 'delcart':
+	if (isset($_SESSION['cartdata'])) {
+		$cartdata=$_SESSION['cartdata'];
+		for ($i=0;$i<count($cartdata);$i++) {
+			if ($cartdata[$i][0]==$delid) {
+				unset($_SESSION['cartdata'][$i]);
+				$_SESSION['cartdata']=array_values($_SESSION['cartdata']);
+				break;
+			}
+			return true;
+		}
+	}
 		break;
 
-	default:	
-	break;
-}
+	case 'checkout':
+		if (isset($_SESSION['username'])) {
+			if (count($_SESSION['cartdata'])==0) {
+				print_r(1);
+			}
+			else{
+				print_r(2);
+			}
+		}
+		else{
+			print_r(0);
+		}
+		break;
+		default:	
+		break;
+	}
 
-?>
+	?>

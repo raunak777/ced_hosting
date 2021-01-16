@@ -15,6 +15,16 @@ if (isset($_SESSION['admin'])) {
 	<title></title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+	 <!-- jquery cdn -->
+  <!-- datatable cdn -->
+  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- datatable cdn -->
+  <!-- datatable css -->
+  <link rel="stylesheet" 
+  href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"><script src="https://cdn.tiny.cloud/1/u6d5o7rruhkaxjxww0o6wuw5mrey0bszj45q3d6t66n2nvzw/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <!-- datatable css-->
 </head>
 <style type="text/css">
 	#logout{
@@ -22,6 +32,7 @@ if (isset($_SESSION['admin'])) {
 	}
 </style>
 <body>
+
 	<!---header--->
 	<div class="header">
 		<div class="container">
@@ -52,7 +63,7 @@ if (isset($_SESSION['admin'])) {
 								<ul class="dropdown-menu">
 									<?php
 
-									include '../admin/productclass.php';
+									include_once '../admin/productclass.php';
 									$prod= new product();
 									$data= $prod->get_product();
 									$length= $data->num_rows;
@@ -67,8 +78,15 @@ if (isset($_SESSION['admin'])) {
 								<li><a href="pricing.php">Pricing</a></li>
 								<li><a href="blog.php">Blog</a></li>
 								<li><a href="contact.php">Contact</a></li>
-								<li><a href=""><i class="fa fa-shopping-cart"></i></b></a></li>
+								
 								<?php
+								if (isset($_SESSION['cartdata'])) {
+									echo '<li><a href="cart.php"><i class="fa fa-shopping-cart"></i><span class="badge badge-secondary">'. count($_SESSION["cartdata"]) .'</span></a></li>';
+								}
+								else{
+									echo '<li><a href="cart.php"><i class="fa fa-shopping-cart"></i><span class="badge badge-secondary">0</span></a></li>';
+								}
+								
 								if (isset($_SESSION['username'])) {
 									echo '<li><a href="logout.php">Logout</a></li>';
 									echo '<li><a href="#">Hello! '.$_SESSION["username"].'</a></li>';

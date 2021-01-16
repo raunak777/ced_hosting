@@ -290,7 +290,7 @@
 
                   <div class="card-body px-lg-5 py-lg-5">
                     <div class="text-center text-muted mb-4">
-                      <large>Create Catagory</large>
+                      <large>Update Catagory</large>
                     </div>
                     <form role="form">
                       <div class="form-group">

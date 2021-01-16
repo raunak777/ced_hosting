@@ -95,6 +95,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					else if (data == 2){
 						alert("Password incorrect");
 					}
+					else if(data ==4)
+					{
+						location.replace('cart.php');
+					}
 					else{
 						alert("Email or Mobile number not registered");
 					}	

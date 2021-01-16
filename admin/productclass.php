@@ -165,8 +165,8 @@ class product{
 			return false;
 		}
 	}
-
-public function edit_product_subproduct($id)
+//edit product in viewproduct page
+	public function edit_product_subproduct($id)
 	{
 		$query="SELECT * FROM `tbl_product` as p JOIN tbl_product_description as pd on p.id=pd.prod_id where pd.prod_id=$id";
 		$res = $this->conn->query($query);
@@ -191,6 +191,57 @@ public function edit_product_subproduct($id)
 		}
 		return $arrdata;
 
+	}
+	public function showHeading($id){
+		$query="SELECT * FROM `tbl_product` WHERE `id`=$id";
+		$res= $this->conn->query($query);
+		if ($res->num_rows>0) {
+			$row= $res->fetch_assoc();
+			return $row;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public function getcatPageDetail($id)
+	{
+		$query="select * from tbl_product as p join tbl_product_description as pd ON p.id= pd.prod_id where p.prod_parent_id=$id";
+		$res= $this->conn->query($query);
+		
+		if ($res->num_rows>0) {
+			while ($rows=$res->fetch_assoc()) {
+				if ($rows['prod_available']=='0') {
+					continue;
+				} else {
+					$available="available";
+				}
+				$decode_descr= json_decode($rows['description']);
+				$de_webspace= $decode_descr->{'webspace'};
+				$de_bandwidth= $decode_descr->{'bandwidth'};
+				$de_freedomain= $decode_descr->{'freedomain'};
+				$de_technology= $decode_descr->{'technology'};
+				$de_mailbox= $decode_descr->{'mailbox'};
+				$arrdata[]= array( "prod_id"=>$rows['prod_id'],
+                    "sku"=>$rows['sku'],
+                    "mon_price"=>$rows['mon_price'],
+                    "annual_price"=>$rows['annual_price'],
+                    "prod_parent_id"=>$rows['prod_parent_id'],
+                    "prod_name"=>$rows['prod_name'],
+                    "link"=>$rows['link'],
+                    "available"=>$available,
+                    "prod_launch_date"=>$rows['prod_launch_date'],
+                    "webspace"=>$de_webspace,
+                    "bandwidth"=>$de_bandwidth,
+                    "freedomain"=>$de_freedomain,
+                    "technology"=>$de_technology,
+                    "mailbox"=>$de_mailbox);
+			}
+			return $arrdata;
+		}
+		else{
+			return false;
+		}
 	}
 
 }
