@@ -33,7 +33,6 @@ switch ($action) {
 	case 'cart':
 	$price='';
 	$data = $user->addCart($cartId);
-	// print_r($data);
 	if ($month_annual == $data['data']['mon_price']) {
 		$price= $month_annual. " Monthly Plan";
 	}
@@ -65,23 +64,32 @@ switch ($action) {
 			return true;
 		}
 	}
-		break;
+	break;
 
 	case 'checkout':
-		if (isset($_SESSION['username'])) {
-			if (count($_SESSION['cartdata'])==0) {
-				print_r(1);
-			}
-			else{
-				print_r(2);
-			}
+	if (isset($_SESSION['username'])) {
+		if (count($_SESSION['cartdata'])==0) {
+			print_r(1);
 		}
 		else{
-			print_r(0);
+			print_r(2);
+		}
+	}
+	else{
+		print_r(0);
+	}
+	break;
+
+	case 'changeselect':
+		$data = $user->company_info();
+		$compst = (string)strtolower($data['comp_state']);
+		$userst = (string)strtolower($valueSelected);
+		if ($compst == $userst) {
+			return "equal";
 		}
 		break;
-		default:	
-		break;
-	}
+	default:	
+	break;
+}
 
-	?>
+?>

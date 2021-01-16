@@ -142,7 +142,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
           }
           else if(data==2)
           {
-            alert("checkoutpage");
+           location.replace("checkoutpage.php");
           }
         } 
       });

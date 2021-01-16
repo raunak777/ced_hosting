@@ -1,6 +1,8 @@
-
 <?php
-session_start();
+if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
 include_once '../admin/dbcon.php';
 class user{
 	public $conn;
@@ -124,6 +126,31 @@ class user{
 		else{
 			return false;
 		}
+	}
+
+	public function getState_name()
+	{
+		$query="select name from tbl_state";
+		$res = $this->conn->query($query);
+		while ( $rows= $res->fetch_assoc()) {
+			$statearr[]=$rows;
+		}
+		return $statearr;
+	}
+	public function company_info()
+	{
+		$query="SELECT * FROM `tbl_company_info`";
+		$res = $this->conn->query($query);
+		while ($rows= $res->fetch_assoc()) {
+			$comp=$rows;
+		}
+		return $comp;
+	}
+
+	public function bill_address_insert($userid,$name,$houseno,$city,$state,$country,$pincode)
+	{
+		$query="INSERT INTO `tbl_user_billing_add`(`user_id`, `billing_name`, `house_no`, `city`, `state`, `country`, `pincode`) VALUES ('$userid','$name','$houseno','$city','$state','$country','$pincode')";
+		$res = $this->conn->query($query);
 	}
 }
 
