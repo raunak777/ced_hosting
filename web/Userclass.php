@@ -130,7 +130,7 @@ class user{
 
 	public function getState_name()
 	{
-		$query="select name from tbl_state";
+		$query="select name from tbl_state order by name asc";
 		$res = $this->conn->query($query);
 		while ( $rows= $res->fetch_assoc()) {
 			$statearr[]=$rows;

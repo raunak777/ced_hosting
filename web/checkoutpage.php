@@ -55,6 +55,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     font-weight: 800;
     text-decoration: underline;
   }
+  #tax18, #other,#tamount{
+    display: none;
+  }
+  #taxesshow{
+    margin-left: 20%;
+    margin-top: 10%;
+  }
 </style>
 </head>
 <body>
@@ -102,9 +109,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <input type="text" class="form-control" id="pincode" placeholder="Enter pincode">
           </div>
           <button type="submit" id="cod" class="btn btn-lg btn-danger">COD</button><br>
-          <div id="paypal-button"></div>
+          
         </form>
-
+      <div id="paypal-button"></div>
       </div>
       <div class="col-lg-5">
         <h2>Product Details</h2>
@@ -129,8 +136,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
           }
         }
         ?>
+        <div id="taxesshow">
         <h4>Amount Before Tax: <?php echo $total; ?></h4>
+        <h4 id="tax18">IGST Tax 18%:₹ <label id="taxdata"></label></h4>
+        <div id="other">
+          <h4>SGST Tax 9%:₹ <label id="taxsg"></label></h4>
+          <h4>CGST Tax 9%:₹ <label id="taxcg"></label></h4>
+        </div>
+        <h4 id="tamount">Total Amount After Tax:₹ <label id="totalam"></label></h4>
       </div>
+      </div>
+      <input type="text" name="amt" id="totalamn" style="display: none">
       <input type="text" name="amt" value="<?php echo $total ?>" id="totalamount" style="display: none">
     </div>
   </div>
@@ -139,18 +155,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   <?php include 'footer.php'; ?>
   <!---footer--->
   <script src="https://www.paypal.com/sdk/js?client-id=AfrTr4MKe026MriRDnj1DTpEgqleVXgT8kkuWMXe-tk9zgc8uDj-MRmU6W9MKOAu5hhcC4nNIUjSIi7J"></script>
-  <script></script>
 </body>
 <script type="text/javascript">
 $(function(){
-  var amount = $("#totalamount").val();
+  
   var paypalarr='';
+
 paypal.Buttons({
   createOrder: function(data, actions){
+    var tamount = $("#totalamn").val();
     return actions.order.create({
       purchase_units:[{
         amount:{
-          value:amount
+          value:tamount
         }
       }]
     });
@@ -162,9 +179,8 @@ paypal.Buttons({
       var data= details;
       var arr = Object.keys(data).map(function (key) { return data[key]; });
       console.log(data);
-      alert(arr);
       paypalarr=arr;
-      console.log(paypalarr);
+      console.log(paypalarr[4]);
     })
   },
   onCancel: function(data)
@@ -174,6 +190,7 @@ paypal.Buttons({
   }
 }).render('#paypal-button');
 
+
   $("#cod").on("click", function()
   {
     var name = $("#name").val();
@@ -182,6 +199,8 @@ paypal.Buttons({
     var state = $("#state option:selected").val();
     var country = $("#country").val();
     var pincode = $("#pincode").val();
+    var ttamount= $("#totalam").html();
+    alert(tt);
     $.ajax({
       type: "POST",
       url: "usermediator.php",
@@ -200,13 +219,36 @@ paypal.Buttons({
     $.ajax({
       type: "POST",
       url: "usermediator.php",
-      data: {action: "changeselect",valueSelected, amount},
+      data: {action: "changeselect",valueSelected},
       success: function(data)
       {
-        console.log(data);
+        if (data==0) {
+          $("#tax18,#tamount").show();
+          $("#other").hide();
+          var taxamount= amount*0.18;
+          $("#taxdata").html(taxamount);
+          var totalam=parseFloat(amount)+parseFloat(taxamount);
+         $("#totalam").html(totalam.toFixed(2));
+         $("#totalamn").val(totalam.toFixed(2));
+        }
+        else{
+          $("#tax18").hide();
+          $("#other,#tamount").show();
+          var cgst= amount*0.09;
+          var sgst= amount*0.09;
+          $("#taxcg").html(cgst);
+          $("#taxsg").html(sgst);
+          var tot=parseFloat(amount)+parseFloat(cgst)+parseFloat(sgst);
+         $("#totalam").html(tot.toFixed(2));
+         $("#totalamn").val(tot.toFixed(2));
+
+        }
+        
       }
     });
   }); 
+
+  
 });
 </script>
 </html>

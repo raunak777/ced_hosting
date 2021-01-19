@@ -81,11 +81,17 @@ switch ($action) {
 	break;
 
 	case 'changeselect':
-		$data = $user->company_info();
-		$compst = (string)strtolower($data['comp_state']);
-		$userst = (string)strtolower($valueSelected);
-		echo strcasecmp($compst,$userst);
-		break;
+	$data = $user->company_info();
+	$compst = (string)strtolower($data['comp_state']);
+	$userst = (string)strtolower($valueSelected);
+	$isequal = strcasecmp($compst,$userst);
+	if ($isequal==0) {
+		echo 0;
+	}
+	else{
+		echo 1;
+	}
+	break;
 	default:	
 	break;
 }
