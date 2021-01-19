@@ -101,7 +101,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <label for="pname">Pincode</label>
             <input type="text" class="form-control" id="pincode" placeholder="Enter pincode">
           </div>
-          <button type="submit" id="cod" class="btn btn-lg btn-danger">COD</button>
+          <button type="submit" id="cod" class="btn btn-lg btn-danger">COD</button><br>
+          <div id="paypal-button"></div>
         </form>
 
       </div>
@@ -126,9 +127,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
             <?php
           }
-          
         }
         ?>
+        <h4>Amount Before Tax: <?php echo $total; ?></h4>
       </div>
       <input type="text" name="amt" value="<?php echo $total ?>" id="totalamount" style="display: none">
     </div>
@@ -137,9 +138,42 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   <!---footer--->
   <?php include 'footer.php'; ?>
   <!---footer--->
+  <script src="https://www.paypal.com/sdk/js?client-id=AfrTr4MKe026MriRDnj1DTpEgqleVXgT8kkuWMXe-tk9zgc8uDj-MRmU6W9MKOAu5hhcC4nNIUjSIi7J"></script>
+  <script></script>
 </body>
 <script type="text/javascript">
- $(function(){
+$(function(){
+  var amount = $("#totalamount").val();
+  var paypalarr='';
+paypal.Buttons({
+  createOrder: function(data, actions){
+    return actions.order.create({
+      purchase_units:[{
+        amount:{
+          value:amount
+        }
+      }]
+    });
+
+  },
+  onApprove: function(data, actions){
+    return actions.order.capture().then(function(details){
+      alert("Payment Successfull");
+      var data= details;
+      var arr = Object.keys(data).map(function (key) { return data[key]; });
+      console.log(data);
+      alert(arr);
+      paypalarr=arr;
+      console.log(paypalarr);
+    })
+  },
+  onCancel: function(data)
+  {
+    console.log(data);
+    alert("Payment Failed");
+  }
+}).render('#paypal-button');
+
   $("#cod").on("click", function()
   {
     var name = $("#name").val();
@@ -148,7 +182,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     var state = $("#state option:selected").val();
     var country = $("#country").val();
     var pincode = $("#pincode").val();
-
     $.ajax({
       type: "POST",
       url: "usermediator.php",
@@ -164,7 +197,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     var optionSelected = $("option:selected", this);
     var valueSelected = this.value;
     var amount = $("#totalamount").val();
-    alert(amount);
     $.ajax({
       type: "POST",
       url: "usermediator.php",

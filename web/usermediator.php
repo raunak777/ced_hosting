@@ -84,9 +84,7 @@ switch ($action) {
 		$data = $user->company_info();
 		$compst = (string)strtolower($data['comp_state']);
 		$userst = (string)strtolower($valueSelected);
-		if ($compst == $userst) {
-			return "equal";
-		}
+		echo strcasecmp($compst,$userst);
 		break;
 	default:	
 	break;
