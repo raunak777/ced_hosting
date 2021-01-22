@@ -92,6 +92,18 @@ switch ($action) {
 		echo 1;
 	}
 	break;
+	case 'forgot':
+		if ($password == $cnfpassword) {
+			$npass= password_hash($password, PASSWORD_BCRYPT);
+			$user->forgot_reset_pass($email, $npass, $question, $ans);
+		}
+		else{
+			echo 4;
+		}
+		break;
+	case 'bill':
+	print_r($_POST);
+	break;	
 	default:	
 	break;
 }

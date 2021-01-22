@@ -142,6 +142,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div id="other">
           <h4>SGST Tax 9%:₹ <label id="taxsg"></label></h4>
           <h4>CGST Tax 9%:₹ <label id="taxcg"></label></h4>
+          <h4>Total Tax:₹ <label id="ttax"></label></h4>
         </div>
         <h4 id="tamount">Total Amount After Tax:₹ <label id="totalam"></label></h4>
       </div>
@@ -191,8 +192,10 @@ paypal.Buttons({
 }).render('#paypal-button');
 
 
-  $("#cod").on("click", function()
+  $("#cod").on("click", function(e)
   {
+    e.preventDefault();
+    var taxamount;
     var name = $("#name").val();
     var houseno = $("#houseno").val();
     var city = $("#city").val();
@@ -200,11 +203,17 @@ paypal.Buttons({
     var country = $("#country").val();
     var pincode = $("#pincode").val();
     var ttamount= $("#totalam").html();
-    alert(tt);
+    if($("#taxdata").html()!='')
+    {
+       taxamount= $("#taxdata").html();
+    }
+    else{
+      taxamount= $("#ttax").html();
+    }
     $.ajax({
       type: "POST",
       url: "usermediator.php",
-      data:{action:"bill", name, houseno, city, state, country, pincode},
+      data:{action:"bill", name, houseno, city, state, country, pincode, taxamount, ttamount},
       success: function(data)
       {
         console.log(data);
@@ -226,7 +235,7 @@ paypal.Buttons({
           $("#tax18,#tamount").show();
           $("#other").hide();
           var taxamount= amount*0.18;
-          $("#taxdata").html(taxamount);
+          $("#taxdata").html(parseFloat(taxamount));
           var totalam=parseFloat(amount)+parseFloat(taxamount);
          $("#totalam").html(totalam.toFixed(2));
          $("#totalamn").val(totalam.toFixed(2));
@@ -238,6 +247,7 @@ paypal.Buttons({
           var sgst= amount*0.09;
           $("#taxcg").html(cgst);
           $("#taxsg").html(sgst);
+          $("#ttax").html(parseFloat(cgst)+parseFloat(sgst));
           var tot=parseFloat(amount)+parseFloat(cgst)+parseFloat(sgst);
          $("#totalam").html(tot.toFixed(2));
          $("#totalamn").val(tot.toFixed(2));

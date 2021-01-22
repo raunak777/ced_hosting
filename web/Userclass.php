@@ -60,12 +60,8 @@ class user{
 				else if($is_admin == 0 && $active ==1){
 						$_SESSION['username']=$row['name'];
 						$_SESSION['user_id']=$row['id'];
-						if (count($_SESSION['cartdata'])>0) {
-							return 4;
-						}
-						else{
 						return 0;
-					}
+			
 				}
 				
 			}
@@ -78,6 +74,30 @@ class user{
 		}
 
 
+	}
+
+	public function forgot_reset_pass($email, $password, $ques, $ans){
+		$query = "SELECT * FROM `tbl_user` WHERE email= '$email'";
+		$res = $this->conn->query($query);
+		if ($res->num_rows>0) {
+			$rows = $res->fetch_assoc();
+			if ($rows['security_question'] == $ques && $rows['security_answer'] == $ans) {
+				$query1= "UPDATE `tbl_user` SET  password ='$password' WHERE email='$email'";
+				$res1= $this->conn->query($query1);
+				if ($res1) {
+					echo 3;
+				}
+				else{
+					echo 2;
+				}
+			}
+			else{
+				echo 1;
+			}
+		}
+		else{
+			echo 0;
+		}
 	}
 
 	public function addCart($id)
