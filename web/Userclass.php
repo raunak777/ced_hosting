@@ -1,8 +1,8 @@
 <?php
 if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
+{ 
+	session_start(); 
+} 
 include_once '../admin/dbcon.php';
 class user{
 	public $conn;
@@ -58,10 +58,10 @@ class user{
 					return 1;
 				}
 				else if($is_admin == 0 && $active ==1){
-						$_SESSION['username']=$row['name'];
-						$_SESSION['user_id']=$row['id'];
-						return 0;
-			
+					$_SESSION['username']=$row['name'];
+					$_SESSION['user_id']=$row['id'];
+					return 0;
+
 				}
 				
 			}
@@ -72,9 +72,8 @@ class user{
 		else{
 			return 3;
 		}
-
-
 	}
+
 
 	public function forgot_reset_pass($email, $password, $ques, $ans){
 		$query = "SELECT * FROM `tbl_user` WHERE email= '$email'";
@@ -167,10 +166,32 @@ class user{
 		return $comp;
 	}
 
-	public function bill_address_insert($userid,$name,$houseno,$city,$state,$country,$pincode)
+	public function bill_address_order_insert($name,$houseno,$city,$state,$country,$pincode, $taxamount, $ttamount)
 	{
-		$query="INSERT INTO `tbl_user_billing_add`(`user_id`, `billing_name`, `house_no`, `city`, `state`, `country`, `pincode`) VALUES ('$userid','$name','$houseno','$city','$state','$country','$pincode')";
+		$user_id= $_SESSION['user_id'];
+		$query="INSERT INTO `tbl_user_billing_add`(`user_id`, `billing_name`, `house_no`, `city`, `state`, `country`, `pincode`) VALUES ('$user_id','$name','$houseno','$city','$state','$country','$pincode')";
 		$res = $this->conn->query($query);
+		if ($res) {
+			$last_id= $this->conn->insert_id;
+		}
+
+		// $select="SELECT MAX(`user_billing_id`) FROM `tbl_orders`";
+		// $sel = $this->conn->query($select);
+		// $row = $sel->fetch_assoc();
+		// $billing = $row['MAX(`user_billing_id`)'];
+		// $split= explode("-",$billing);
+		// $new_num= $split[1]+1;
+		// $billing_id = $split[0]."-".$new_num;
+
+		$query1= "INSERT INTO `tbl_orders`(`user_id`, `user_billing_id`, `order_date`, `status`, `promocode_applied_id`, `discount_amt`, `total_amt_after_dis`, `tax_amt`, `final_invoice_amt`) VALUES ('$user_id','$last_id',NOW(),'0','0','0','$ttamount','$taxamount','$ttamount')";
+		$exec = $this->conn->query($query1);
+		if ($exec) {
+			echo 1;
+			unset($_SESSION['cartdata']);
+		}
+		else{
+			echo 0;
+		}
 	}
 }
 

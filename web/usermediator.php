@@ -86,10 +86,10 @@ switch ($action) {
 	$userst = (string)strtolower($valueSelected);
 	$isequal = strcasecmp($compst,$userst);
 	if ($isequal==0) {
-		echo 0;
+		echo 1;
 	}
 	else{
-		echo 1;
+		echo 0;
 	}
 	break;
 	case 'forgot':
@@ -102,7 +102,8 @@ switch ($action) {
 		}
 		break;
 	case 'bill':
-	print_r($_POST);
+	$data = $user->bill_address_order_insert($name,$houseno,$city,$state,$country,$pincode, $taxamount, $ttamount);
+	print_r($data);
 	break;	
 	default:	
 	break;

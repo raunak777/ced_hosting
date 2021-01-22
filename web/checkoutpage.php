@@ -62,6 +62,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     margin-left: 20%;
     margin-top: 10%;
   }
+  #showmsg{
+    background: #9ACD32;
+    height: 50px;
+    padding: 7px;
+    font-size: 20px;
+    margin-top: 3px;
+    text-align: center;
+    color: white;
+    display: none;
+  }
 </style>
 </head>
 <body>
@@ -102,29 +112,30 @@ License URL: http://creativecommons.org/licenses/by/3.0/
           </div>
           <div class="form-group">
             <label for="cname">Country</label>
-            <input type="text" class="form-control" value="India" readonly id="name" placeholder="Enter country name">
+            <input type="text" class="form-control" value="India" readonly id="country" placeholder="Enter country name">
           </div>
           <div class="form-group">
             <label for="pname">Pincode</label>
             <input type="text" class="form-control" id="pincode" placeholder="Enter pincode">
           </div>
-          <button type="submit" id="cod" class="btn btn-lg btn-danger">COD</button><br>
+          <button type="submit" id="cod" class="btn btn-lg btn-danger">Cash on Delivery</button><br>
+          <div class="text-success" id="showmsg"></div>
           
-        </form>
+        </form><br><br>
       <div id="paypal-button"></div>
       </div>
       <div class="col-lg-5">
         <h2>Product Details</h2>
         <?php
         $total=0;
-        if (count($_SESSION['cartdata'])>0) {
+        if (isset($_SESSION['cartdata']) && count($_SESSION['cartdata'])>0) {
           $cartdata=$_SESSION['cartdata'];
           foreach ($cartdata as $key => $value1) {
             $total+=(int)$value1[3];
             
             ?>
 
-            <div class="showdata">
+            <div class="showdata" id="shdata">
               <h4>Product Id: <?php echo $value1[0]?></h4>
               <h4>Catagory Name: <?php echo $value1[1]?></h4>
               <h4>Product Name: <?php echo $value1[2]?></h4>
@@ -135,6 +146,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <?php
           }
         }
+        else{}
         ?>
         <div id="taxesshow">
         <h4>Amount Before Tax: <?php echo $total; ?></h4>
@@ -216,7 +228,15 @@ paypal.Buttons({
       data:{action:"bill", name, houseno, city, state, country, pincode, taxamount, ttamount},
       success: function(data)
       {
-        console.log(data);
+        if (data==1) {
+          $('#shdata').load(document.URL +  ' #shdata');
+          $('#taxesshow').load(document.URL +  ' #taxesshow');
+          $("#showmsg").show();
+          $("#showmsg").text("Order success and Transaction Pending...");
+        }
+        else{
+          $("#showmsg").text("Order error!");
+        }
       }
     });
   });
@@ -251,14 +271,10 @@ paypal.Buttons({
           var tot=parseFloat(amount)+parseFloat(cgst)+parseFloat(sgst);
          $("#totalam").html(tot.toFixed(2));
          $("#totalamn").val(tot.toFixed(2));
-
-        }
-        
+        } 
       }
     });
   }); 
-
-  
 });
 </script>
 </html>
